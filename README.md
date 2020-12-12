@@ -4,7 +4,14 @@ This example shows only a demonstration for Linux x64.
 
 ## Demo
 
-1. Download Ofront+ and re-build the translator
+0. Clone this repository
+
+```
+git clone https://github.com/egorsmkv/oberon-cgi.git
+cd oberon-cgi
+```
+
+1. Clone Ofront+ and re-build the translator
 
 ```
 git clone https://github.com/Oleg-N-Cher/OfrontPlus.git
@@ -37,7 +44,7 @@ mkdir compiled
 $CC HelloWorld.c -s -o compiled/HelloWorld $LIB
 ```
 
-5. Compile the HTTP/CGI server and start it
+5. Compile in **a new terminal** the HTTP/CGI server and start it
 
 ```
 go build -o server main.go
