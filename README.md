@@ -2,6 +2,12 @@
 
 This example shows only a demonstration for Linux x64.
 
+## Requirements
+
+- A system working on Linux x64
+- Go compiler
+- C toolchain
+
 ## Demo
 
 0. Clone this repository
