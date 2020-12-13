@@ -7,6 +7,7 @@ This example shows only a demonstration for Linux x64.
 - A system working on Linux x64
 - Go compiler
 - C toolchain
+- a terminal with the bash shell
 
 ## Demo
 
@@ -32,25 +33,36 @@ cd ../../../../
 2. Set environment variables
 
 ```
-export OBERON=./OfrontPlus/Target/Linux_amd64/Bin:./OfrontPlus/Target/Linux_amd64/Bin/../Lib/Sym:./OfrontPlus/Target/Linux_amd64/Bin/../Sym
-export LIB="-I./OfrontPlus/Target/Linux_amd64/Lib/Obj -I./OfrontPlus/Mod/Lib -L./OfrontPlus/Target/Linux_amd64/Lib -lOfront"
-export CC="cc -m64 -Os -g0 -fvisibility=hidden -fomit-frame-pointer -finline-small-functions -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables -Wl,--gc-sections"
+export OTARGET=Linux_amd64
+export OFRONT=`pwd`/OfrontPlus
+export OTARGET_DIR=$OFRONT/Target/$OTARGET
+
+export PATH=$PATH:$OTARGET_DIR
+
+export OFRONT_MOD_LIB=$OFRONT/Mod/Lib
+export OFRONT_LIB=$OTARGET_DIR/Lib
+export OFRONT_OBJ=$OFRONT_LIB/Obj
+
+export C_COMPILER_ARGS="-I$OFRONT_OBJ -I$OFRONT_MOD_LIB -L$OFRONT_LIB -lOfront"
+export C_COMPILER="cc -m64 -Os -g0 -fvisibility=hidden -fomit-frame-pointer -finline-small-functions -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables -Wl,--gc-sections"
+
+export OBERON=`pwd`:$OTARGET_DIR/Bin:$OFRONT_LIB/Sym:$OFRONT_LIB
 ```
 
 3. Translate the Oberon program to C
 
 ```
-./OfrontPlus/Target/Linux_amd64/ofront+ -mC -88 ./examples/HelloWorld.cp
+ofront+ -m -2 -88 ./examples/HelloWorld.ob2
 ```
 
 4. Compile a "HelloWorld" program
 
 ```
 mkdir compiled
-$CC HelloWorld.c -s -o compiled/HelloWorld $LIB
+$C_COMPILER HelloWorld.c -s -o compiled/HelloWorld $C_COMPILER_ARGS
 ```
 
-5. Compile in **a new terminal** the HTTP/CGI server and start it
+5. Compile and run the HTTP/CGI server
 
 ```
 go build -o server main.go
